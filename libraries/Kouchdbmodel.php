@@ -19,7 +19,7 @@ class Kouchdbmodel_Core
 	{
 		if (!isset(self::$client))
 		{
-			$config = Kohana::config('couchdb.' . $config_name);
+			$config = Kohana::config('kouchdb.' . $config_name);
 			$url = 'http' . (($config['ssl']) ? 's' : '') . '://' .
 					$config['host'] . ':' . $config['port'];
 			self::$client = new couchClient($url, $config['database']);
