@@ -41,7 +41,13 @@ class Kouchdbmodel_Core
 			if (isset($doc_id))
 			{
 				$d_id = "$this->doctype:$doc_id";
-				$doc = couchDocument::getInstance(self::$client, $d_id);
+				$doc = self::$client->asArray()->getDoc($d_id);
+				if (is_array($doc))
+				{
+					$this->properties = $doc;
+					$this->properties['_id'] = $doc['id'];
+					$this->properties['_rev'] = $doc['rev'];
+				}
 			}
 		} catch (Exception $ex) {
 			
