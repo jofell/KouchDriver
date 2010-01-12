@@ -116,12 +116,11 @@ class Hello_Controller extends Controller
     function add()
     {
         $users_model = new Users_Model();
-        $users_model-&gt;firstname = 'Ivy Jean';
-        $users_model-&gt;lastname = 'Vibar';
-        $users_model-&gt;email = 'ivibar@vibalfoundation.org';
-        $users_model-&gt;password = sha1('Ivy');
+        $users_model-&gt;firstname = 'Jeffrey';
+        $users_model-&gt;lastname = 'Vallarta';
+        $users_model-&gt;email = 'jeffrey_man@gmail.com';
+        $users_model-&gt;password = sha1('Jeffrey');
         $users_model-&gt;save();
-        print_r($users_model);
     }
 
 }
@@ -135,9 +134,9 @@ class Hello_Controller extends Controller
    "_id": "users:12619907257372",
    "_rev": "1-9fcf2135a9fee51d2348286e7ecbadd1",
    "doctype": "users",
-   "firstname": "Ivy Jean",
-   "lastname": "Vibar",
-   "email": "ivibar@vibalfoundation.org",
+   "firstname": "Jeffrey",
+   "lastname": "Vallarta",
+   "email": "jeffrey_man@gmail.com",
    "password": "f3742ddc65ddad911e4f7f284021686e152498d7" 
 }
 </pre>
