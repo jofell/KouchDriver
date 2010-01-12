@@ -91,6 +91,17 @@ class Kouchdbmodel_Core
 		
 	}
 	
+	public function delete()
+	{
+		try
+		{
+			$doc = couchDocument::getInstance(self::$client, $this->properties['_id']);
+			self::$client->deleteDoc($doc);
+		} catch (Exception $ex) {
+			throw new Exception('Document doesn\'t exist');
+		}
+	}
+	
 	public function __call($method, $parameters)
 	{
 		if (isset($parameters[0]) && is_array($parameters[0]) && !empty($parameters[0]))
