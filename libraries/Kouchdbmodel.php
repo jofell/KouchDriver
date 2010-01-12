@@ -28,8 +28,8 @@ class Kouchdbmodel_Core
 	
 	public function docid()
 	{
-		$docid_split = explode(':', $this->_id);
-		return $docid_split[1];
+		$docid_split = explode(':', $this->properties['_id']);
+		return (isset($docid_split[1]) ? $docid_split[1] : NULL);
 	}
 	
 	public function __construct($doc_id = NULL, $config_name = 'default')
@@ -45,17 +45,15 @@ class Kouchdbmodel_Core
 				if (is_array($doc))
 				{
 					$this->properties = $doc;
-					$this->properties['_id'] = $doc['id'];
-					$this->properties['_rev'] = $doc['rev'];
 				}
 			}
 		} catch (Exception $ex) {
 			
 		}
 		
-		if (!isset($this->_id))
+		if (!isset($this->properties['_id']))
 		{
-			$this->_id = $this->doctype . ':' . ((int)microtime(true)) . 
+			$this->properties['_id'] = $this->doctype . ':' . ((int)microtime(true)) . 
 				rand(1000, 9999);
 		}
 	}
@@ -67,6 +65,11 @@ class Kouchdbmodel_Core
 	
 	public function __get($key)
 	{
+		if ($key == '_id')
+		{
+			return $this->docid();
+		}
+		
 		return $this->properties[$key];
 	}
 	
@@ -74,14 +77,17 @@ class Kouchdbmodel_Core
 	{
 		try
 		{
-			$doc = couchDocument::getInstance(self::$client, $this->_id);
-			$doc->set($this->properties);
-			self::$client->storeDoc($doc);
+			$doc = couchDocument::getInstance(self::$client, $this->properties['_id']);
+			$temp_set = $this->properties;
+			unset($temp_set['_id']);
+			unset($temp_set['_rev']);
+			$doc->set($temp_set);
+			$this->properties['_rev'] = $doc->_rev;
 		} catch (Exception $ex) {
 			$doc = new couchDocument(self::$client);
 			$doc->set($this->properties);
+			$this->properties['_rev'] = $doc->_rev;
 		}
-		
 		
 	}
 	
